@@ -560,7 +560,7 @@ $('#burger').onclick = () => $('#menu').classList.toggle('open');
 $$('#menu a').forEach(a => a.addEventListener('click', () => $('#menu').classList.remove('open')));
 
 // 히어로 문구 (지웠다가 다시 쓰기)
-const words = ['정확하게', '꼼꼼하게', '쉽게', '함께'];
+const words = ['정확하게', '핵심만', '확인해서', '빠짐없이'];
 let wi = 0, ch = words[0].length, deleting = true;
 (function rotate(){
   $('#rotator').textContent = words[wi].slice(0, ch);
