@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>김대명 | 백엔드 개발자 포트폴리오</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f3f5fb; --card:#fff; --text:#1b1d29; --sub:#6c7088; --line:#e3e6f0;
+    --main:#4f46e5; --main2:#06b6d4; --soft:#eef0ff; --shadow:rgba(27,29,41,.07);
+    --edu:var(--main); --cert:#10b981; --work:#f59e0b;
+  }
+  [data-theme="dark"]{
+    --bg:#0f1220; --card:#181c2e; --text:#e8eaf3; --sub:#9aa0bb; --line:#2a2f47;
+    --main:#818cf8; --main2:#22d3ee; --soft:#23284a; --shadow:rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;transition:background .4s,color .4s;overflow-x:hidden}
+  body.lock{overflow:hidden}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+
+  #progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--main),var(--main2));z-index:100}
+
+  /* 내비게이션 */
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);transition:box-shadow .3s}
+  nav.scrolled{box-shadow:0 4px 20px var(--shadow)}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
+  .logo{font-weight:900;font-size:20px}
+  .menu{display:flex;gap:6px;list-style:none;align-items:center}
+  .menu a{font-size:14px;padding:6px 14px;border-radius:999px;color:var(--sub);transition:.2s;display:block}
+  .menu a:hover,.menu a.on{background:var(--card);color:var(--main);box-shadow:0 2px 8px var(--shadow)}
+  .icon-btn{width:38px;height:38px;border-radius:50%;border:none;background:var(--card);color:var(--text);cursor:pointer;font-size:17px;box-shadow:0 2px 8px var(--shadow);transition:.2s}
+  .icon-btn:hover{transform:rotate(-15deg) scale(1.08)}
+  .nav-right{display:flex;gap:8px;align-items:center}
+  #burger{display:none}
+
+  /* 히어로 */
+  .hero{display:grid;grid-template-columns:340px 1fr;gap:36px;padding:40px 0 70px;align-items:center}
+  .profile{background:var(--card);border-radius:24px;padding:32px;text-align:center;box-shadow:0 10px 40px var(--shadow);position:relative;overflow:hidden}
+  .profile::before{content:'';position:absolute;inset:0 0 auto 0;height:90px;background:linear-gradient(135deg,var(--main),var(--main2));opacity:.12}
+  .avatar{position:relative;width:120px;height:120px;border-radius:50%;margin:0 auto 18px;background:linear-gradient(135deg,var(--main),var(--main2));display:grid;place-items:center;color:#fff;font-size:42px;font-weight:900;box-shadow:0 0 0 6px var(--card)}
+  .profile h2{font-size:24px}
+  .profile .role{color:var(--main);font-weight:500;margin-bottom:6px}
+  .badge{display:inline-block;font-size:12px;background:var(--soft);color:var(--main);padding:2px 10px;border-radius:999px;margin-bottom:16px}
+  .profile dl{text-align:left;font-size:14px;border-top:1px solid var(--line);padding-top:16px;display:grid;grid-template-columns:76px 1fr;row-gap:6px}
+  .profile dt{color:var(--sub)}
+  .profile dd{word-break:break-all}
+  .profile .btns{display:flex;gap:8px;margin-top:20px}
+  .profile .btns a{flex:1;padding:10px;border-radius:12px;font-size:14px;font-weight:500;background:var(--soft);color:var(--main);transition:.2s}
+  .profile .btns a:first-child{background:var(--main);color:#fff}
+  .profile .btns a:hover{transform:translateY(-2px)}
+
+  .eyebrow{display:inline-block;background:var(--card);padding:6px 14px;border-radius:999px;font-size:13px;color:var(--main);font-weight:500;margin-bottom:18px;box-shadow:0 2px 8px var(--shadow)}
+  .intro h1{font-size:clamp(30px,4.6vw,50px);line-height:1.3;font-weight:900;margin-bottom:18px;word-break:keep-all}
+  .grad{background:linear-gradient(90deg,var(--main),var(--main2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  #rotator{display:inline-block;min-width:4.2em;border-right:4px solid var(--main);padding-right:4px;animation:caret 1s steps(1) infinite}
+  @keyframes caret{50%{border-color:transparent}}
+  .intro p{color:var(--sub);font-size:17px;max-width:560px}
+  .stats{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap}
+  .stats div{background:var(--card);border-radius:16px;padding:14px 20px;min-width:120px;box-shadow:0 2px 10px var(--shadow)}
+  .stats b{display:block;font-size:26px;font-weight:900;color:var(--main)}
+  .stats small{color:var(--sub);font-size:13px}
+  .scroll-hint{display:inline-flex;align-items:center;gap:8px;margin-top:30px;font-size:13px;color:var(--sub)}
+  .scroll-hint i{width:20px;height:32px;border:2px solid var(--sub);border-radius:12px;position:relative}
+  .scroll-hint i::after{content:'';position:absolute;left:50%;top:6px;width:4px;height:6px;margin-left:-2px;border-radius:2px;background:var(--sub);animation:wheel 1.6s infinite}
+  @keyframes wheel{to{transform:translateY(10px);opacity:0}}
+
+  section{padding:70px 0}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:26px;gap:16px;flex-wrap:wrap}
+  .kicker{font-size:13px;font-weight:700;color:var(--main);letter-spacing:.08em}
+  .head h2{font-size:30px;font-weight:900}
+  .head p{color:var(--sub);font-size:15px}
+
+  /* 캐러셀 */
+  .filters{display:flex;gap:6px;background:var(--card);padding:5px;border-radius:999px;box-shadow:0 2px 10px var(--shadow)}
+  .filters button{border:none;background:none;color:var(--sub);padding:7px 16px;border-radius:999px;font-size:14px;cursor:pointer;transition:.2s}
+  .filters button.on{background:var(--main);color:#fff}
+  .carousel{position:relative}
+  .track{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;padding:20px calc(50% - 170px) 30px;scrollbar-width:none;cursor:grab}
+  .track.dragging{cursor:grabbing;scroll-snap-type:none}
+  .track::-webkit-scrollbar{display:none}
+  .slide{flex:0 0 340px;scroll-snap-align:center;background:var(--card);border-radius:24px;overflow:hidden;box-shadow:0 8px 30px var(--shadow);display:flex;flex-direction:column;transform:scale(.88);opacity:.55;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .45s,box-shadow .45s;user-select:none}
+  .slide.active{transform:scale(1);opacity:1;box-shadow:0 20px 50px color-mix(in srgb,var(--main) 25%,transparent)}
+  .thumb{height:170px;display:grid;place-items:center;font-size:62px;position:relative;overflow:hidden}
+  .thumb .emoji{transition:transform .5s}
+  .slide.active .thumb .emoji{transform:scale(1.12) rotate(-6deg)}
+  .thumb .label{position:absolute;top:14px;left:14px;background:rgba(255,255,255,.92);color:#1b1d29;font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px}
+  .slide .body{padding:22px;flex:1;display:flex;flex-direction:column}
+  .slide h3{font-size:18px;line-height:1.4;margin-bottom:6px}
+  .slide .meta{font-size:13px;color:var(--sub);margin-bottom:10px}
+  .slide ul{list-style:none;font-size:14px;color:var(--sub);margin-bottom:14px;flex:1}
+  .slide li{padding-left:16px;position:relative;margin-bottom:4px}
+  .slide li::before{content:'';position:absolute;left:2px;top:10px;width:6px;height:6px;border-radius:50%;background:var(--main)}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tags span{font-size:12px;background:var(--soft);color:var(--main);padding:2px 10px;border-radius:999px}
+  .more{margin-top:16px;border:none;background:var(--soft);color:var(--main);padding:10px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;transition:.2s}
+  .slide.active .more{background:var(--main);color:#fff}
+  .controls{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:4px}
+  .controls .icon-btn{width:44px;height:44px}
+  .controls .icon-btn:hover{transform:scale(1.08);background:var(--main);color:#fff}
+  .controls .icon-btn:disabled{opacity:.35;pointer-events:none}
+  .dots{display:flex;gap:8px}
+  .dots button{width:8px;height:8px;border-radius:999px;border:none;background:var(--line);cursor:pointer;transition:.3s;padding:0}
+  .dots button.on{width:28px;background:var(--main)}
+  .counter{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums;min-width:52px;text-align:center}
+  .autobar{height:3px;background:var(--line);border-radius:3px;max-width:200px;margin:14px auto 0;overflow:hidden}
+  .autobar i{display:block;height:100%;width:0;background:var(--main)}
+
+  /* 상세 팝업 */
+  .modal{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:20px;background:rgba(10,12,24,.55);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:.3s}
+  .modal.open{opacity:1;pointer-events:auto}
+  .sheet{background:var(--card);width:min(720px,100%);max-height:88vh;overflow:auto;border-radius:26px;transform:translateY(30px) scale(.97);transition:.35s cubic-bezier(.2,.8,.2,1)}
+  .modal.open .sheet{transform:none}
+  .sheet .thumb{height:190px;font-size:76px}
+  .sheet .close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.92);color:#1b1d29}
+  .sheet .content{padding:28px 32px 34px}
+  .sheet h3{font-size:24px;line-height:1.35;margin-bottom:4px}
+  .sheet .meta{color:var(--sub);font-size:14px;margin-bottom:20px}
+  .sheet h4{font-size:15px;color:var(--main);margin:22px 0 8px}
+  .sheet p,.sheet li{font-size:15px}
+  .sheet ul{padding-left:20px}
+  .sheet li{margin-bottom:6px}
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .facts div{background:var(--soft);border-radius:14px;padding:12px 14px}
+  .facts small{display:block;color:var(--sub);font-size:12px}
+  .facts b{font-size:15px}
+  .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+  .links a{padding:10px 18px;border-radius:12px;background:var(--main);color:#fff;font-size:14px;font-weight:500}
+
+  /* 기술 */
+  .skill-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .skill{background:var(--card);border-radius:20px;padding:22px;box-shadow:0 2px 10px var(--shadow);transition:.3s}
+  .skill:hover{transform:translateY(-6px);box-shadow:0 16px 34px var(--shadow)}
+  .skill .ic{width:46px;height:46px;border-radius:14px;background:var(--soft);display:grid;place-items:center;font-size:22px;margin-bottom:12px;transition:.3s}
+  .skill:hover .ic{transform:rotate(-10deg) scale(1.1)}
+  .skill h3{font-size:16px;margin-bottom:4px}
+  .skill p{font-size:13px;color:var(--sub);margin-bottom:12px}
+
+  /* 학력 · 자격 */
+  .two{display:grid;grid-template-columns:1.2fr 1fr;gap:20px}
+  .box{background:var(--card);border-radius:22px;padding:28px;box-shadow:0 2px 10px var(--shadow)}
+  .box h3{font-size:17px;margin-bottom:18px}
+  .tl{list-style:none;position:relative;padding-left:26px}
+  .tl::before,.tl::after{content:'';position:absolute;left:6px;top:6px;width:2px}
+  .tl::before{bottom:6px;background:var(--line)}
+  .tl::after{height:0;background:linear-gradient(var(--main),var(--main2));transition:height 1.4s ease .3s}
+  .tl.show::after{height:calc(100% - 12px)}
+  .tl li{position:relative;padding-bottom:20px}
+  .tl li:last-child{padding-bottom:0}
+  .tl li::before{content:'';position:absolute;left:-26px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--card);border:3px solid var(--c,var(--main));z-index:1}
+  .tl .date{font-size:13px;color:var(--c,var(--main));font-weight:500}
+  .tl b{display:block}
+  .tl small{color:var(--sub)}
+  .certs{display:grid;gap:10px}
+  .cert{display:flex;align-items:center;gap:14px;padding:14px;border-radius:14px;background:var(--soft)}
+  .cert .ic{font-size:22px}
+  .cert b{display:block;font-size:15px}
+  .cert small{color:var(--sub)}
+
+  /* 걸어온 길 */
+  .journey{margin-bottom:20px;padding:24px 0 18px}
+  .jhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:0 28px;margin-bottom:6px}
+  .journey h3{margin:0}
+  .jlegend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--sub);align-items:center}
+  .jlegend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+  .jplay{border:none;background:var(--soft);color:var(--main);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500;cursor:pointer}
+  .jtrack{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+  .jline{position:relative;height:232px}
+  .jbase,.jfill{position:absolute;top:122px;height:4px;border-radius:4px}
+  .jbase{background:var(--line)}
+  .jfill{background:linear-gradient(90deg,var(--main),var(--main2));width:0;transition-property:width;transition-timing-function:linear}
+  .jstop{position:absolute;top:114px;width:124px;transform:translateX(-50%);background:none;border:none;color:var(--text);cursor:pointer;text-align:center;padding:0}
+  .jstop .dot{display:block;width:20px;height:20px;margin:0 auto 8px;border-radius:50%;background:var(--card);border:4px solid var(--c);transition:.3s}
+  .jstop .d{display:block;font-size:13px;font-weight:700;color:var(--sub);transition:.3s}
+  .jstop .t{display:block;font-size:12px;line-height:1.4;color:var(--sub);opacity:.75;transition:.3s;word-break:keep-all}
+  .jstop.done .dot{background:var(--c)}
+  .jstop.done .d{color:var(--c)}
+  .jstop.now .dot{transform:scale(1.35);box-shadow:0 0 0 6px color-mix(in srgb,var(--c) 22%,transparent)}
+  .jstop.now .t{opacity:1;color:var(--text);font-weight:500}
+  .walker{position:absolute;left:0;top:40px;width:60px;height:82px;margin-left:-30px;transition-property:transform,opacity;transition-timing-function:linear;z-index:2;pointer-events:none}
+  .walker.gone{opacity:0;transition:opacity .5s}
+  .walker svg{width:60px;height:82px;overflow:visible;transition:transform .2s}
+  .walker svg.left{transform:scaleX(-1)}
+  .walker .leg,.walker .arm{transform-box:view-box}
+  .walker .leg{transform-origin:30px 58px}
+  .walker .arm{transform-origin:30px 44px}
+  .walker.walking .leg.f,.walker.walking .arm.b{animation:swing .42s ease-in-out infinite alternate}
+  .walker.walking .leg.b,.walker.walking .arm.f{animation:swing .42s ease-in-out infinite alternate-reverse}
+  .walker.walking .body{animation:bob .21s ease-in-out infinite alternate}
+  @keyframes swing{from{transform:rotate(-28deg)}to{transform:rotate(28deg)}}
+  @keyframes bob{from{transform:translateY(0)}to{transform:translateY(-2px)}}
+  .bubble{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translate(-50%,6px);background:var(--text);color:var(--bg);font-size:13px;font-weight:500;padding:6px 12px;border-radius:12px;white-space:nowrap;opacity:0;transition:.3s}
+  .bubble::after{content:'';position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:var(--text)}
+  .bubble.show{opacity:1;transform:translate(-50%,0)}
+
+  /* 스토리 */
+  .story{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:28px;padding:48px;display:grid;grid-template-columns:220px 1fr;gap:30px;position:relative;overflow:hidden}
+  .story::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.08)}
+  .story h2{font-size:28px;font-weight:900;line-height:1.3}
+  .story p{opacity:.92;margin-bottom:12px}
+  .flow{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .flow span{background:rgba(255,255,255,.16);padding:6px 14px;border-radius:999px;font-size:13px}
+  .ways{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+  .way{background:var(--card);border-radius:20px;padding:22px;box-shadow:0 2px 10px var(--shadow)}
+  .way b{display:block;margin:6px 0 4px}
+  .way p{font-size:14px;color:var(--sub)}
+
+  /* 연락 */
+  .contact{background:var(--card);border-radius:28px;padding:48px;text-align:center;box-shadow:0 2px 10px var(--shadow)}
+  .contact h2{font-size:28px;font-weight:900;margin-bottom:24px}
+  .contact .row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+  .contact .row a,.contact .row button{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:14px;border:none;font-size:15px;font-weight:500;cursor:pointer;background:var(--soft);color:var(--main);transition:.2s}
+  .contact .row a:first-child{background:var(--main);color:#fff}
+  .contact .row a:hover,.contact .row button:hover{transform:translateY(-3px)}
+  footer{padding:40px 0 50px;text-align:center;color:var(--sub);font-size:13px}
+
+  #toTop{position:fixed;right:22px;bottom:22px;z-index:40;opacity:0;pointer-events:none;transform:translateY(10px);transition:.3s;width:46px;height:46px;background:var(--main);color:#fff}
+  #toTop.show{opacity:1;pointer-events:auto;transform:none}
+  #toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,20px);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:12px;font-size:14px;opacity:0;transition:.3s;z-index:300;pointer-events:none}
+  #toast.show{opacity:1;transform:translate(-50%,0)}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:.8s cubic-bezier(.2,.8,.2,1)}
+  .reveal.show{opacity:1;transform:none}
+
+  @media(max-width:900px){
+    .hero{grid-template-columns:1fr}
+    .skill-grid{grid-template-columns:1fr 1fr}
+    .two,.story,.ways{grid-template-columns:1fr}
+  }
+  @media(max-width:640px){
+    .wrap{padding:0 16px}
+    #burger{display:inline-block}
+    .menu{position:absolute;top:64px;left:12px;right:12px;flex-direction:column;background:var(--card);border-radius:18px;padding:10px;box-shadow:0 10px 30px var(--shadow);opacity:0;pointer-events:none;transform:translateY(-8px);transition:.25s}
+    .menu.open{opacity:1;pointer-events:auto;transform:none}
+    .menu li{width:100%}
+    .menu a{padding:10px 14px}
+    .track{padding:16px 7% 26px}
+    .slide{flex-basis:86%}
+    .skill-grid{grid-template-columns:1fr}
+    .story,.contact{padding:30px 24px}
+    .sheet .content{padding:22px}
+    .facts{gap:6px}
+    .facts div{padding:10px}
+    .facts b{font-size:13px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav id="nav">
+  <div class="wrap">
+    <a href="#top" class="logo grad">김대명</a>
+    <ul class="menu" id="menu">
+      <li><a href="#projects">프로젝트</a></li>
+      <li><a href="#skills">기술</a></li>
+      <li><a href="#education">학력·경력</a></li>
+      <li><a href="#story">스토리</a></li>
+      <li><a href="#contact">연락</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="icon-btn" id="themeBtn" aria-label="다크 모드 전환">🌙</button>
+      <button class="icon-btn" id="burger" aria-label="메뉴">☰</button>
+    </div>
+  </div>
+</nav>
+
+<header class="wrap hero" id="top">
+  <aside class="profile reveal">
+    <div class="avatar">김</div>
+    <h2>김대명</h2>
+    <div class="role">Backend Developer</div>
+    <span class="badge">AIoT 과정 5회차</span>
+    <dl>
+      <dt>교육</dt><dd>DW아카데미 AIoT 과정</dd>
+      <dt>강점</dt><dd>소통 · 확인 · 정리</dd>
+      <dt>이메일</dt><dd>rlaeoaud7018@gmail.com</dd>
+    </dl>
+    <div class="btns">
+      <a href="https://github.com/rlaeoaud7018" target="_blank" rel="noopener">GitHub</a>
+      <a href="#projects">프로젝트</a>
+    </div>
+  </aside>
+  <div class="intro reveal">
+    <span class="eyebrow">👋 커뮤니케이션 중심의 신입 개발자</span>
+    <h1>끝까지 듣고<br><span class="grad" id="rotator">정확하게</span><br>전하는 개발자입니다</h1>
+    <p>Java · Spring Boot · MySQL로 분석 결과 수신과 1분 통계, 혼잡 판정 기능을 만들었고, YOLOv8 영상 분석 서버와 연동하는 관제 시스템을 팀과 함께 만들었습니다.</p>
+    <div class="stats">
+      <div><b data-count="3">0</b><small>프로젝트</small></div>
+      <div><b data-count="6" data-suffix="명">0</b><small>최대 협업 인원</small></div>
+      <div><b data-count="8" data-suffix="개월">0</b><small>AIoT 과정</small></div>
+    </div>
+    <a href="#projects" class="scroll-hint"><i></i>아래로 스크롤</a>
+  </div>
+</header>
+
+<main>
+<section id="projects">
+  <div class="wrap">
+    <div class="head reveal">
+      <div><div class="kicker">PROJECTS</div><h2>프로젝트</h2><p>옆으로 넘기거나 카드를 눌러 자세히 보세요</p></div>
+      <div class="filters" id="filters">
+        <button class="on" data-f="all">전체</button><button data-f="team">팀</button><button data-f="solo">개인</button>
+      </div>
+    </div>
+  </div>
+  <div class="carousel reveal">
+    <div class="track" id="track"></div>
+    <div class="controls">
+      <button class="icon-btn" id="prev" aria-label="이전 프로젝트">←</button>
+      <div class="dots" id="dots"></div>
+      <span class="counter" id="counter">01 / 03</span>
+      <button class="icon-btn" id="next" aria-label="다음 프로젝트">→</button>
+      <button class="icon-btn" id="playBtn" aria-label="자동 넘김 정지">❚❚</button>
+    </div>
+    <div class="autobar"><i id="autobar"></i></div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="head reveal"><div><div class="kicker">SKILLS</div><h2>기술 스택</h2><p>프로젝트에서 직접 사용한 기술입니다</p></div></div>
+    <div class="skill-grid">
+      <div class="skill reveal"><div class="ic">☕</div><h3>Backend</h3><p>결과 수신 · 통계 API, 권한 오류 처리</p>
+        <div class="tags"><span>Java 17</span><span>Spring Boot</span><span>Spring Security</span><span>JPA</span><span>MyBatis</span><span>JUnit</span></div></div>
+      <div class="skill reveal"><div class="ic">🗄️</div><h3>Database · Infra</h3><p>지역 계층 · 분 단위 통계 설계, 로컬 통합 실행</p>
+        <div class="tags"><span>MySQL</span><span>Flyway</span><span>Docker</span><span>WSL2</span><span>nginx</span></div></div>
+      <div class="skill reveal"><div class="ic">🤖</div><h3>AI / Python</h3><p>영상 속 사람 탐지 · 추적 · 인원 집계</p>
+        <div class="tags"><span>Python</span><span>Flask</span><span>OpenCV</span><span>YOLOv8</span><span>ByteTrack</span></div></div>
+      <div class="skill reveal"><div class="ic">🛠️</div><h3>Front · Tools</h3><p>관제 웹 · Android 앱, 이슈 → PR → 리뷰 협업</p>
+        <div class="tags"><span>HTML/JS</span><span>Chart.js</span><span>Android</span><span>Git</span><span>Postman</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="head reveal"><div><div class="kicker">EDUCATION · CAREER</div><h2>학력 · 경력 · 자격</h2></div></div>
+    <div class="box journey reveal" id="journey">
+      <div class="jhead">
+        <h3>🚶 걸어온 길</h3>
+        <div class="jlegend">
+          <span><i style="background:var(--edu)"></i>학력 · 교육</span>
+          <span><i style="background:var(--cert)"></i>자격 · 수상</span>
+          <span><i style="background:var(--work)"></i>일</span>
+          <button class="jplay" id="jplay" aria-label="애니메이션 멈춤">❚❚ 멈춤</button>
+        </div>
+      </div>
+      <div class="jtrack" id="jtrack">
+        <div class="jline" id="jline">
+          <div class="jbase" id="jbase"></div>
+          <div class="jfill" id="jfill"></div>
+          <div class="walker" id="walker" aria-hidden="true">
+            <div class="bubble" id="bubble"></div>
+            <svg viewBox="0 0 60 82">
+              <g class="body">
+                <g class="arm b"><rect x="27" y="43" width="6" height="15" rx="3" fill="var(--main)" opacity=".7"/></g>
+                <g class="leg b"><rect x="26" y="57" width="8" height="16" rx="4" fill="#475070"/><ellipse cx="32" cy="74" rx="6" ry="3" fill="#262b40"/></g>
+                <g class="leg f"><rect x="26" y="57" width="8" height="16" rx="4" fill="#353c58"/><ellipse cx="32" cy="74" rx="6" ry="3" fill="#262b40"/></g>
+                <rect x="17" y="40" width="26" height="22" rx="9" fill="var(--main)"/>
+                <rect x="15" y="44" width="8" height="14" rx="3" fill="var(--main2)"/>
+                <g class="arm f"><rect x="27" y="43" width="6" height="15" rx="3" fill="var(--main)"/><circle cx="30" cy="59" r="3" fill="#f6d2b0"/></g>
+                <circle cx="31" cy="24" r="17" fill="#f6d2b0"/>
+                <path d="M14 22 Q14 6 31 6 Q48 6 48 22 Q44 14 36 14 Q30 18 20 16 Q16 18 14 22Z" fill="#1f1a1d"/>
+                <rect x="31" y="21" width="9" height="7" rx="2.5" fill="none" stroke="#2b2b3a" stroke-width="1.4"/>
+                <rect x="41" y="21" width="6" height="7" rx="2.5" fill="none" stroke="#2b2b3a" stroke-width="1.4"/>
+                <circle cx="36" cy="24.5" r="1.6" fill="#2b2233"/><circle cx="44" cy="24.5" r="1.6" fill="#2b2233"/>
+                <path d="M37 33 Q40 35 43 33" fill="none" stroke="#9a5148" stroke-width="1.4" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="two">
+      <div class="box reveal">
+        <h3>💼 학력 · 경력</h3>
+        <ul class="tl">
+          <li><div class="date">2026.04 – 2026.11</div><b>DW아카데미 · AIoT 드론 영상 관제 시스템 개발 과정 (5회차)</b><small>K-디지털 트레이닝 · 1,120시간 · Java, Spring Boot, MySQL, Python, 영상 분석 · 팀 프로젝트 2회</small></li>
+          <li style="--c:var(--work)"><div class="date">2024.01 – 2025.01</div><b>문화종합주택관리 · 프리랜서 팀장</b><small>일정 · 우선순위 수립, 현장 수리 · 원인 분석, 일일 보고서</small></li>
+          <li style="--c:var(--work)"><div class="date">2019.08 – 2020.02</div><b>메타넷엠씨씨 · 국민카드콜센터</b><small>인바운드 상담, VOC · CS 관리</small></li>
+          <li style="--c:var(--work)"><div class="date">2018.04 – 2019.04</div><b>삼성화재 대전지점 · 동화세상에듀코</b><small>보험 설계 · 고객 관리, 상담 · 교사 매칭 · 계약 데이터 관리</small></li>
+          <li style="--c:var(--work)"><div class="date">2013.03 – 2018.02</div><b>육군 수도기계화사단 · 중사 전역</b><small>소대 인사 관리 · 고충 상담, K21 장갑차 교육 담당</small></li>
+          <li><div class="date">2010</div><b>Wynberg Boys' High School</b><small>졸업 · 남아프리카공화국</small></li>
+        </ul>
+      </div>
+      <div class="box reveal">
+        <h3>📜 자격 · 수상 · 어학</h3>
+        <div class="certs">
+          <div class="cert"><span class="ic">🏅</span><div><b>UFG 사단장 표창</b><small>2015 · 한미연합훈련 동시통역관</small></div></div>
+          <div class="cert"><span class="ic">🚗</span><div><b>1종 보통 운전면허</b><small>2020.06</small></div></div>
+          <div class="cert"><span class="ic">🌏</span><div><b>영어</b><small>일상 회화 가능 · 남아공 고교 졸업</small></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="story">
+  <div class="wrap">
+    <div class="story reveal">
+      <h2>개발을<br>시작한 이유</h2>
+      <div>
+        <p>주택관리와 콜센터 현장에서 수기 기록과 반복 문의에 많은 시간이 드는 것을 보며, 이런 일을 시스템으로 줄일 수 있겠다는 생각에 개발을 시작했습니다.</p>
+        <p>세 번의 프로젝트에서 영상 분석 결과가 서버를 거쳐 통계로 쌓이고 화면에 전달되는 흐름을 직접 만들어 보며, 데이터가 오가는 과정이 안정적이어야 서비스가 믿을 만해진다는 것을 배웠습니다.</p>
+        <div class="flow"><span>🎖️ 군 · 통역</span><span>→</span><span>📞 상담 · 현장 관리</span><span>→</span><span>💻 AIoT 개발 과정</span><span>→</span><span>🚀 백엔드 개발자</span></div>
+      </div>
+    </div>
+    <div class="ways">
+      <div class="way reveal">👂<b>묻는 방식</b><p>모르는 것은 미루지 않고, 확인한 것과 확인이 필요한 것을 나눠서 묻습니다.</p></div>
+      <div class="way reveal">🔍<b>푸는 방식</b><p>추측하기보다 문제를 직접 다시 일으켜 보고, 원인을 좁혀 가며 해결합니다.</p></div>
+      <div class="way reveal">✅<b>마무리 방식</b><p>끝난 일도 다시 들여다보고, 실제와 다른 부분은 바로잡아 둡니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact reveal">
+      <h2>끝까지 봐 주셔서 감사합니다 🙌</h2>
+      <div class="row">
+        <a href="https://github.com/rlaeoaud7018" target="_blank" rel="noopener">GitHub 보기</a>
+        <button id="copyEmail">✉ rlaeoaud7018@gmail.com 복사</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>© 2026 김대명 · HTML/CSS/JS로 만든 포트폴리오</footer>
+<button class="icon-btn" id="toTop" aria-label="맨 위로">↑</button>
+<div id="toast"></div>
+
+<div class="modal" id="modal" aria-hidden="true"><div class="sheet" id="sheet"></div></div>
+
+<script>
+const EMAIL = 'rlaeoaud7018@gmail.com';
+
+// 걸어온 길 (오래된 것부터) · type: edu / cert / work
+const JOURNEY = [
+  { date: '2010',    type: 'edu',  icon: '🎓', title: "Wynberg Boys' High School 졸업" },
+  { date: '2013.03', type: 'work', icon: '🎖️', title: '육군 수도기계화사단 복무 시작' },
+  { date: '2015.08', label: '2015', type: 'cert', icon: '🏅', title: 'UFG 사단장 표창 (동시통역)' },
+  { date: '2018.02', type: 'work', icon: '🎖️', title: '중사 전역' },
+  { date: '2018.04', type: 'work', icon: '📋', title: '삼성화재 대전지점' },
+  { date: '2018.12', type: 'work', icon: '📚', title: '동화세상에듀코 상담' },
+  { date: '2019.08', type: 'work', icon: '📞', title: '국민카드콜센터 상담' },
+  { date: '2020.06', type: 'cert', icon: '🚗', title: '1종 보통 운전면허' },
+  { date: '2024.01', type: 'work', icon: '🏠', title: '문화종합주택관리 팀장' },
+  { date: '2026.04', type: 'edu',  icon: '🚁', title: 'DW아카데미 AIoT 과정 시작' },
+  { date: '2026.06', type: 'edu',  icon: '🔥', title: '1차 팀 프로젝트 · 산불 관제' },
+  { date: '2026.09', type: 'edu',  icon: '🛰️', title: '개인 프로젝트 · 드론관제시스템' },
+  { date: '2026.10', type: 'edu',  icon: '👁️', title: '2차 팀 프로젝트 · White-Eyes' },
+  { date: '2026.11', type: 'edu',  icon: '🚀', title: '과정 마무리 · 백엔드 개발자로!' },
+];
+
+const PROJECTS = [
+  {
+    type: 'team', emoji: '👁️', bg: 'linear-gradient(135deg,#c7d2fe,#a5f3fc)', label: '2차 팀 · 7주',
+    title: 'White-Eyes<br>드론 유동인구 분석 시스템',
+    meta: '6명 · 결과 수신 / 1분 통계 / 혼잡 판정 / 테스트 · 발표 담당',
+    points: ['분석 결과 수신 API (1초마다, 최대 2,000건 묶음)', '1분 통계 저장 · 늦은 재전송 덮어쓰기 방지', '혼잡 3단계 판정 공통 모듈', '핵심 4영역 검증 108/108 정리'],
+    tags: ['Spring Boot', 'JPA', 'MySQL', 'Flyway', 'Docker'],
+    detail: {
+      period: '7주 (10.06 – 11.23)', members: '6명', role: '결과 수신 · 통계 · 테스트',
+      summary: '드론·CCTV 영상에서 사람을 탐지·추적해 구역별 인원, 유입·유출, 체류 시간을 구하고, 1분·시간·일 단위 통계와 혼잡 3단계 경보로 보여 주는 서비스입니다. 통계를 보는 사용자 앱과 구역·캠·영상·이벤트를 운영하는 관리자 앱으로 나눠 만들었습니다.',
+      work: [
+        '분석 결과 수신: 분석 서버가 1초마다 보내는 결과를 구역·분별 누적기에 모음. 형식이 하나라도 틀리면 묶음 전체를 400으로 거절',
+        '녹화 등록 수신: 영상 + 좌표 파일 경로 규칙 검사, Flyway 마이그레이션 작성',
+        '1분 통계 저장: 분이 끝나고 5초 뒤 마감해 INSERT … ON DUPLICATE KEY UPDATE로 저장',
+        '혼잡 단계 판정: 밀집도(명/㎡)를 BigDecimal로 비교해 정상·주의·위험 판정',
+        '버그 수정 · 개선: 403이 JSON으로 나오던 문제, 지도 툴팁 지역명 누락, 통계 그래프 추가',
+        '테스트 · 검증 정리: 기능 명세서 검수 기준과 테스트 결과를 대조해 발표 자료로 정리',
+      ],
+      learned: [
+        '재전송·재시작 같은 실패 상황까지 대입해 봐야 정확한 기준이 나온다는 것을 알게 됐습니다.',
+        '잘못된 설정은 조용히 틀리기보다 시작 단계에서 실패하는 편이 안전하다는 것을 배웠습니다.',
+        '403 문제를 Accept 헤더별로 재현해 표로 정리하니 원인이 바로 보였습니다.',
+        '테스트 DB(H2)와 실제 DB(MySQL)가 다르면 테스트가 통과해도 놓치는 것이 있다는 것을 알게 됐습니다.',
+      ],
+      stack: ['Spring Boot', 'Spring Security', 'JPA', 'MySQL 8', 'Flyway', 'Flask', 'YOLOv8', 'nginx', 'Docker', 'WSL2'],
+      links: [{ text: 'GitHub 조직 보기', url: 'https://github.com/white-eyes1' }],
+    },
+  },
+  {
+    type: 'team', emoji: '🔥', bg: 'linear-gradient(135deg,#fed7aa,#fecaca)', label: '1차 팀 · 4주',
+    title: '드론 산불<br>관제 시스템',
+    meta: '5명 · 팀장 / 프론트엔드 / 개발일정(WBS) 담당',
+    points: ['로그인 · 대시보드 · 관리자 · 공지 화면 설계', '공통 레이아웃을 include로 분리해 재사용', '모니터링(HUD) · 감지 이력 화면', '4주 개발일정(WBS) 작성 · 통합 테스트'],
+    tags: ['Flask', 'YOLOv8', 'ESP32-CAM', 'HTML/JS'],
+    detail: {
+      period: '4주 (06.25 – 07.23)', members: '5명', role: '팀장 · 프론트엔드',
+      summary: 'ESP32-CAM 영상을 YOLO로 분석해 화재·연기를 찾고, 관제 웹에 실시간 영상·지도·감지 로그를 보여 주며, 감지되면 Discord 웹훅과 관리자 SMS로 알리는 시스템입니다. Flask Blueprint 단위로 기능을 나눠 팀원별로 병렬 개발했습니다.',
+      work: [
+        '로그인 · 대시보드 · 관리자 · 공지 와이어프레임과 UI 시안',
+        '상단 메뉴 · 하단 영역을 templates/include로 분리해 재사용',
+        '카메라 영상을 표시하는 모니터링 화면(HUD) UI',
+        '회원가입 · 로그인 · 회원 승인 · 공지, 감지 이력 목록과 상세 화면 (BE와 함께)',
+        '가입 → 승인 → 모니터링 → 감지 → 로그 통합 시나리오 테스트, 개발일정 작성',
+      ],
+      learned: [
+        '처음으로 팀장을 맡아 Blueprint 단위로 역할을 나누고 개발일정으로 진행 상황을 맞췄습니다.',
+        '화면에 보이는 결과만이 아니라 실제로 주고받는 데이터를 확인해야 한다는 것을 알게 됐습니다.',
+        '데이터를 JSON 파일에 두면 양이 늘수록 다루기 어려워, 다음 프로젝트에서 MySQL로 바꿨습니다.',
+      ],
+      stack: ['Python', 'Flask', 'YOLOv8', 'ESP32-CAM', 'HTML/CSS/JS', 'JSON', 'Discord Webhook'],
+      links: [],
+    },
+  },
+  {
+    type: 'solo', emoji: '🛰️', bg: 'linear-gradient(135deg,#bfdbfe,#c7f9cc)', label: '개인 · 3주',
+    title: '드론관제시스템<br>구역별 인원 · 밀집도 관제',
+    meta: '개인 프로젝트 · 기획부터 발표까지 1인',
+    points: ['YOLOv8s + ByteTrack 탐지 · 추적 · 유입/유출', 'Spring Boot + MyBatis 백엔드 · API 43개', '웹 대시보드 · Android 관제 앱', '이슈 18건 기록 · 기간 내 전부 해결'],
+    tags: ['Spring Boot', 'MyBatis', 'MySQL', 'Flask', 'Android'],
+    detail: {
+      period: '3주 (09.29 – 10.19)', members: '1명', role: '기획 · 개발 · 검증 전체',
+      summary: '녹화된 영상을 가상 카메라(DUMMY 캠)로 등록해 반복 재생하고, YOLOv8s + ByteTrack으로 사람을 찾아 구역별 인원·밀집도·유입/유출을 1분 단위로 집계합니다. 기준을 넘으면 이벤트를 자동으로 만들고 웹 대시보드와 Android 앱에 보여 줍니다.',
+      work: [
+        '기획 · 설계: 요구사항 43건, API 명세 43개, 테이블 12개, 웹 · 모바일 와이어프레임',
+        '분석 서버: 사람 탐지 · 추적, 판정선 기준 유입/유출, 이동 방향 분석, 라이브뷰(MJPEG)',
+        '백엔드: 지역(시/구/동) → 구역 → 카메라 CRUD, 1분 버킷 UPSERT, 혼잡 이벤트 자동 생성, SSE',
+        '웹 대시보드: 지도 마커 혼잡 색, 카메라 카드, 통계 패널(Chart.js)',
+        'Android 앱: 로그인 · 구역 목록 · 상세(라이브뷰) · 지도 · 이벤트 조치',
+        '검증: 테스트 케이스 41개, 이슈관리대장 18건',
+      ],
+      learned: [
+        '극밀집 영상에서 4명만 찾던 문제를 모델 · 해상도 조정으로 11명, 영상 구도 변경으로 67~86명까지 늘리며 입력 데이터부터 봐야 한다는 것을 알게 됐습니다.',
+        '서버끼리 주고받는 시각 형식 차이로 결과가 조용히 사라지는 것을 보고, 보내는 쪽도 실패를 확인해야 한다는 것을 배웠습니다.',
+        '브라우저의 호스트당 동시 연결 6개 제한 때문에 7번째 카메라가 멈추는 것을 찾으며, curl 확인과 실제 화면 확인은 다르다는 것을 알게 됐습니다.',
+        '자동 테스트 없이 손으로만 검증하니 고칠 때마다 다시 확인해야 했고, 이 경험이 다음 프로젝트에서 테스트를 맡는 계기가 됐습니다.',
+      ],
+      stack: ['Java 17', 'Spring Boot 3.3', 'MyBatis', 'MySQL 8', 'Python', 'Flask', 'YOLOv8s', 'ByteTrack', 'Chart.js', 'Android'],
+      links: [{ text: 'GitHub 저장소', url: 'https://github.com/rlaeoaud7018/DroneControllSystemApp' }],
+    },
+  },
+];
+
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 1800); }
+
+// 다크 모드
+const store = { get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem(k, v); } catch(e){} } };
+function setTheme(t){ document.documentElement.dataset.theme = t; $('#themeBtn').textContent = t === 'dark' ? '☀️' : '🌙'; store.set('theme', t); }
+setTheme(store.get('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+$('#themeBtn').onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+
+// 모바일 메뉴
+$('#burger').onclick = () => $('#menu').classList.toggle('open');
+$$('#menu a').forEach(a => a.addEventListener('click', () => $('#menu').classList.remove('open')));
+
+// 히어로 문구 (지웠다가 다시 쓰기)
+const words = ['정확하게', '꼼꼼하게', '쉽게', '함께'];
+let wi = 0, ch = words[0].length, deleting = true;
+(function rotate(){
+  $('#rotator').textContent = words[wi].slice(0, ch);
+  let delay = deleting ? 70 : 140;
+  if (deleting && ch === 0){ deleting = false; wi = (wi + 1) % words.length; delay = 300; }
+  else if (!deleting && ch === words[wi].length){ deleting = true; delay = 2200; }
+  else ch += deleting ? -1 : 1;
+  setTimeout(rotate, delay);
+})();
+
+/* ===== 캐러셀 ===== */
+const track = $('#track'), dotsBox = $('#dots'), counter = $('#counter'), bar = $('#autobar');
+const DURATION = 5000;
+let list = PROJECTS, current = 0, playing = true, t0 = 0, dragMoved = false;
+
+function render(){
+  track.innerHTML = list.map((p, i) => `
+    <article class="slide" data-i="${i}">
+      <div class="thumb" style="background:${p.bg}"><span class="label">${p.label}</span><span class="emoji">${p.emoji}</span></div>
+      <div class="body">
+        <h3>${p.title}</h3>
+        <div class="meta">${p.meta}</div>
+        <ul>${p.points.map(x => `<li>${x}</li>`).join('')}</ul>
+        <div class="tags">${p.tags.map(x => `<span>${x}</span>`).join('')}</div>
+        <button class="more" data-open="${i}">자세히 보기 →</button>
+      </div>
+    </article>`).join('');
+  dotsBox.innerHTML = list.map((_, i) => `<button aria-label="${i + 1}번째 프로젝트" data-go="${i}"></button>`).join('');
+  track.scrollLeft = 0;
+  requestAnimationFrame(() => goTo(0, false));
+}
+const slides = () => [...track.children];
+const centerOf = el => el.offsetLeft - (track.clientWidth - el.offsetWidth) / 2;
+function goTo(i, smooth = true){
+  const s = slides(); if (!s.length) return;
+  current = (i + s.length) % s.length;
+  track.scrollTo({ left: centerOf(s[current]), behavior: smooth ? 'smooth' : 'auto' });
+  mark(); restartAuto();
+}
+function mark(){
+  slides().forEach((s, k) => s.classList.toggle('active', k === current));
+  [...dotsBox.children].forEach((d, k) => d.classList.toggle('on', k === current));
+  counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(list.length).padStart(2, '0')}`;
+  $('#prev').disabled = $('#next').disabled = list.length < 2;
+}
+let scrollRaf;
+track.addEventListener('scroll', () => {
+  cancelAnimationFrame(scrollRaf);
+  scrollRaf = requestAnimationFrame(() => {
+    const mid = track.scrollLeft + track.clientWidth / 2;
+    let best = 0, dist = Infinity;
+    slides().forEach((s, k) => { const d = Math.abs(s.offsetLeft + s.offsetWidth / 2 - mid); if (d < dist){ dist = d; best = k; } });
+    if (best !== current){ current = best; mark(); }
+  });
+});
+$('#prev').onclick = () => goTo(current - 1);
+$('#next').onclick = () => goTo(current + 1);
+dotsBox.onclick = e => { const b = e.target.closest('[data-go]'); if (b) goTo(+b.dataset.go); };
+track.addEventListener('click', e => {
+  if (dragMoved) return;
+  const slide = e.target.closest('.slide'); if (!slide) return;
+  const i = +slide.dataset.i;
+  if (i !== current && !e.target.closest('[data-open]')) return goTo(i);
+  openModal(i);
+});
+$('#filters').onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  $$('#filters button').forEach(x => x.classList.toggle('on', x === b));
+  list = b.dataset.f === 'all' ? PROJECTS : PROJECTS.filter(p => p.type === b.dataset.f);
+  render();
+};
+// 마우스로 끌어서 넘기기
+let down = false, sx = 0, sl = 0;
+track.addEventListener('mousedown', e => { down = true; dragMoved = false; sx = e.pageX; sl = track.scrollLeft; });
+addEventListener('mousemove', e => {
+  if (!down) return;
+  if (Math.abs(e.pageX - sx) > 5){ dragMoved = true; track.classList.add('dragging'); }
+  if (dragMoved){ e.preventDefault(); track.scrollLeft = sl - (e.pageX - sx); }
+});
+addEventListener('mouseup', () => {
+  if (!down) return; down = false;
+  track.classList.remove('dragging');
+  if (dragMoved){ goTo(current); setTimeout(() => dragMoved = false, 50); }
+});
+addEventListener('keydown', e => {
+  if ($('#modal').classList.contains('open')){ if (e.key === 'Escape') closeModal(); return; }
+  const r = track.getBoundingClientRect();
+  if (r.top > innerHeight || r.bottom < 0) return;
+  if (e.key === 'ArrowRight') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+});
+// 자동 넘김: 마우스를 실제로 올려 두면 잠시 멈춤
+let hover = false, msx = null, msy = null;
+const carouselEl = $('.carousel');
+addEventListener('mousemove', e => {
+  const moved = e.screenX !== msx || e.screenY !== msy;
+  msx = e.screenX; msy = e.screenY;
+  if (moved) hover = carouselEl.contains(e.target);
+}, { passive: true });
+addEventListener('scroll', () => { hover = false; }, { passive: true });
+carouselEl.addEventListener('mouseleave', () => { hover = false; });
+track.addEventListener('touchstart', () => { hover = true; }, { passive: true });
+track.addEventListener('touchend', () => { setTimeout(() => { hover = false; restartAuto(); }, 3000); });
+function restartAuto(){ t0 = performance.now(); }
+(function tick(now){
+  const r = track.getBoundingClientRect();
+  const visible = r.top < innerHeight && r.bottom > 0;
+  if (playing && !hover && visible && !$('#modal').classList.contains('open') && list.length > 1){
+    const p = Math.min(1, (now - t0) / DURATION);
+    bar.style.width = (p * 100) + '%';
+    if (p >= 1) goTo(current + 1);
+  } else { t0 = now - (parseFloat(bar.style.width) || 0) / 100 * DURATION; }
+  requestAnimationFrame(tick);
+})(performance.now());
+$('#playBtn').onclick = () => {
+  playing = !playing;
+  $('#playBtn').textContent = playing ? '❚❚' : '▶';
+  $('#playBtn').setAttribute('aria-label', playing ? '자동 넘김 정지' : '자동 넘김 시작');
+  if (!playing) bar.style.width = '0%';
+  restartAuto();
+};
+addEventListener('resize', () => goTo(current, false));
+
+/* ===== 상세 팝업 ===== */
+const modal = $('#modal'), sheet = $('#sheet');
+function openModal(i){
+  const p = list[i], d = p.detail;
+  sheet.innerHTML = `
+    <div class="thumb" style="background:${p.bg};position:relative">
+      <span class="label">${p.label}</span><span class="emoji">${p.emoji}</span>
+      <button class="icon-btn close" aria-label="닫기">✕</button>
+    </div>
+    <div class="content">
+      <h3>${p.title.replace('<br>', ' ')}</h3>
+      <div class="meta">${p.meta}</div>
+      <div class="facts">
+        <div><small>기간</small><b>${d.period}</b></div>
+        <div><small>인원</small><b>${d.members}</b></div>
+        <div><small>내 역할</small><b>${d.role}</b></div>
+      </div>
+      <h4>프로젝트 소개</h4><p>${d.summary}</p>
+      <h4>내가 한 일</h4><ul>${d.work.map(x => `<li>${x}</li>`).join('')}</ul>
+      <h4>배운 점</h4><ul>${d.learned.map(x => `<li>${x}</li>`).join('')}</ul>
+      <h4>사용 기술</h4><div class="tags">${d.stack.map(x => `<span>${x}</span>`).join('')}</div>
+      ${d.links.length ? `<div class="links">${d.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener">${l.text} ↗</a>`).join('')}</div>` : ''}
+    </div>`;
+  sheet.querySelector('.close').onclick = closeModal;
+  modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('lock'); sheet.scrollTop = 0;
+}
+function closeModal(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); document.body.classList.remove('lock'); restartAuto(); }
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+/* ===== 기타 효과 ===== */
+$('#copyEmail').onclick = async () => {
+  try { await navigator.clipboard.writeText(EMAIL); toast('이메일을 복사했어요 ✉'); }
+  catch(e){ toast(EMAIL); }
+};
+const navLinks = $$('#menu a');
+function onScroll(){
+  const h = document.documentElement;
+  $('#progress').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  $('#nav').classList.toggle('scrolled', scrollY > 10);
+  $('#toTop').classList.toggle('show', scrollY > 600);
+  let cur = '';
+  $$('section[id]').forEach(s => { if (scrollY >= s.offsetTop - 140) cur = s.id; });
+  navLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur));
+}
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+$('#toTop').onclick = () => scrollTo({ top: 0, behavior: 'smooth' });
+
+function countUp(el){
+  const end = +el.dataset.count, suf = el.dataset.suffix || '', st = performance.now();
+  (function f(now){ const p = Math.min(1, (now - st) / 1200); el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))) + suf; if (p < 1) requestAnimationFrame(f); })(st);
+}
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('show');
+  e.target.querySelectorAll('[data-count]').forEach(countUp);
+  e.target.querySelectorAll('.tl').forEach(t => t.classList.add('show'));
+  io.unobserve(e.target);
+}), { threshold: .12 });
+$$('.reveal').forEach(el => io.observe(el));
+
+/* ===== 걸어온 길: 캐릭터가 연표를 따라 걸어감 ===== */
+(function journey(){
+  const COLOR = { edu: 'var(--edu)', cert: 'var(--cert)', work: 'var(--work)' };
+  const PAD = 150, PAUSE = 2000;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const line = $('#jline'), trackEl = $('#jtrack'), walker = $('#walker'), svg = walker.querySelector('svg');
+  const bubble = $('#bubble'), fill = $('#jfill'), base = $('#jbase'), playBtn = $('#jplay');
+  const mo = d => { const [y, m] = d.split('.').map(Number); return y * 12 + (m || 1); };
+
+  // 기간이 길수록 간격을 넓게 (최소 130px, 최대 260px)
+  const xs = [];
+  JOURNEY.forEach((s, i) => xs.push(i === 0 ? PAD : xs[i - 1] + Math.min(260, 130 + (mo(s.date) - mo(JOURNEY[i - 1].date)) * 3)));
+  const startX = xs[0] - 60, last = JOURNEY.length - 1;
+  line.style.width = (xs[last] + PAD + 60) + 'px';
+  base.style.left = fill.style.left = xs[0] + 'px';
+  base.style.width = (xs[last] - xs[0]) + 'px';
+  line.insertAdjacentHTML('beforeend', JOURNEY.map((s, i) => `
+    <button class="jstop" style="left:${xs[i]}px;--c:${COLOR[s.type]}" data-k="${i}" aria-label="${s.label || s.date} ${s.title}">
+      <span class="dot"></span><span class="d">${s.label || s.date}</span><span class="t">${s.title}</span>
+    </button>`).join(''));
+  const stops = $$('.jstop');
+
+  let at = -1, playingJ = !reduce, tmo = null, started = false;
+  function place(nx, dur){ walker.style.transitionDuration = dur + 'ms'; walker.style.transform = `translateX(${nx}px)`; }
+  function walkTo(i){
+    clearTimeout(tmo);
+    const x = new DOMMatrix(getComputedStyle(walker).transform).m41;
+    const dur = reduce ? 0 : Math.min(2800, 300 + Math.abs(xs[i] - x) * 6);
+    svg.classList.toggle('left', xs[i] < x);
+    walker.classList.toggle('walking', dur > 0);
+    bubble.classList.remove('show');
+    stops.forEach(s => s.classList.remove('now'));
+    fill.style.transitionDuration = dur + 'ms';
+    fill.style.width = Math.max(0, xs[i] - xs[0]) + 'px';
+    trackEl.scrollTo({ left: xs[i] - trackEl.clientWidth / 2, behavior: reduce ? 'auto' : 'smooth' });
+    place(xs[i], dur);
+    tmo = setTimeout(() => arrive(i), dur);
+  }
+  function arrive(i){
+    at = i;
+    walker.classList.remove('walking');
+    svg.classList.remove('left');
+    stops.forEach((s, k) => { s.classList.toggle('done', k <= i); s.classList.toggle('now', k === i); });
+    bubble.textContent = `${JOURNEY[i].icon} ${JOURNEY[i].title}`;
+    bubble.classList.add('show');
+    if (playingJ) tmo = setTimeout(next, i === last ? PAUSE * 1.8 : PAUSE);
+  }
+  function next(){
+    if (at < last) return walkTo(at + 1);
+    // 끝까지 가면 사라졌다가 처음부터 다시
+    bubble.classList.remove('show');
+    walker.classList.add('gone');
+    tmo = setTimeout(() => {
+      place(startX, 0);
+      fill.style.transitionDuration = '0ms'; fill.style.width = '0';
+      stops.forEach(s => s.classList.remove('done', 'now'));
+      at = -1;
+      walker.offsetWidth;
+      walker.classList.remove('gone');
+      tmo = setTimeout(() => walkTo(0), 400);
+    }, 550);
+  }
+  function setPlaying(p){
+    playingJ = p;
+    playBtn.textContent = p ? '❚❚ 멈춤' : '▶ 재생';
+    playBtn.setAttribute('aria-label', p ? '애니메이션 멈춤' : '애니메이션 재생');
+    if (p && !walker.classList.contains('walking')){ clearTimeout(tmo); next(); }
+    if (!p && !walker.classList.contains('walking')) clearTimeout(tmo);
+  }
+  playBtn.onclick = () => setPlaying(!playingJ);
+  line.addEventListener('click', e => {
+    const b = e.target.closest('.jstop'); if (!b) return;
+    if (playingJ) setPlaying(false);
+    walkTo(+b.dataset.k);
+  });
+  place(startX, 0);
+  new IntersectionObserver((es, ob) => {
+    if (!es[0].isIntersecting || started) return;
+    started = true; ob.disconnect();
+    if (reduce){ setPlaying(false); walkTo(last); } else setTimeout(() => walkTo(0), 500);
+  }, { threshold: .35 }).observe($('#journey'));
+})();
+
+render();
+</script>
+</body>
+</html>
